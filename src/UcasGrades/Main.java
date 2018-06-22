@@ -145,10 +145,10 @@ public class Main {
             Utilities.printException("FileNotFoundException in getMarksSite method", e);
             return "ф";
         }
-        String MarksSiteAsString = "";
+        StringBuilder MarksSiteAsStringBuilder = new StringBuilder();
         while (MarksSiteScanner.hasNext()) {
-            MarksSiteAsString += MarksSiteScanner.next();
+            MarksSiteAsStringBuilder.append(MarksSiteScanner.next());
         }
-        return MarksSiteAsString;
+        return MarksSiteAsStringBuilder.toString();
     }
 }
