@@ -29,22 +29,19 @@ public class Main {
             Scanner cacheScanner = null;
 
             File cache = new File("cache/cache");
-            if (cache.exists()) {
                 try {
-                    cacheScanner = new Scanner(new File("cache/cache"));
+                    cacheScanner = new Scanner(cache);
+                        if (cacheScanner.hasNext()) {
+                            username = cacheScanner.nextLine();
+                            password = cacheScanner.nextLine();
+                        }
                 } catch (FileNotFoundException e) {
                     Utilities.printException("Exception in the Scanner of the cache file", e);
+                    username = JOptionPane.showInputDialog("Enter your university ID");
+                    password = JOptionPane.showInputDialog("Enter your password");
+                    keepLogin = JOptionPane.showConfirmDialog(null, "Remember username & password ?") == 0;//0 = yes choice
                 }
-                if (cacheScanner != null && cacheScanner.hasNext()) {
-                    username = cacheScanner.nextLine();
-                    password = cacheScanner.nextLine();
-                    cacheScanner.close();
-                }
-            } else {
-                username = JOptionPane.showInputDialog("Enter your university ID");
-                password = JOptionPane.showInputDialog("Enter your password");
-                keepLogin = JOptionPane.showConfirmDialog(null, "Remember username & password ?") == 0;//0 = yes choice
-            }
+
             cache.getParentFile().mkdirs();
 
             Authorization authorization = Authorization.NOT_FOUND;
