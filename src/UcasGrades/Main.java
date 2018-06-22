@@ -75,15 +75,19 @@ public class Main {
                 writeOnMarksSite(newMarksSite);
             }
             while (newMarksSite.contains("ф")) {
+
+                String oldMarksSite = getSavedMarksSite();
+
                 newMarksSite = "";
                 Scanner s = new Scanner(UcasWeb.getMarksPage());
                 while (s.hasNext()) {
                     newMarksSite += s.next();
                 }
-                if (getSavedMarksSite().contains("ф")) {
+
+                if (oldMarksSite.contains("ф")) {
                     writeOnMarksSite(newMarksSite);
-                }
-                if (!getSavedMarksSite().equals(newMarksSite)) {
+                    continue;
+                } else if (!oldMarksSite.equals(newMarksSite)) {
                     JOptionPane.showMessageDialog(null, "Hey ! \n new grade has been submitted !!");
                     writeOnMarksSite(newMarksSite);
                     break;
