@@ -144,9 +144,7 @@ public class Main {
         } catch (FileNotFoundException e) {
             Utilities.printException("FileNotFoundException in getMarksSite method", e);
             return "ф";
-        } finally {
-            MarksSiteScanner.close();
-            }
+        }
         StringBuilder MarksSiteAsStringBuilder = new StringBuilder();
         while (MarksSiteScanner.hasNext()) {
             MarksSiteAsStringBuilder.append(MarksSiteScanner.next());
