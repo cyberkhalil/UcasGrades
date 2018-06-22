@@ -41,7 +41,6 @@ public class Main {
                     password = JOptionPane.showInputDialog("Enter your password");
                     keepLogin = JOptionPane.showConfirmDialog(null, "Remember username & password ?") == 0;//0 = yes choice
                 }
-            }
 
             cache.getParentFile().mkdirs();
 
