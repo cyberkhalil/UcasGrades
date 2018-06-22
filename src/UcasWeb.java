@@ -1,12 +1,16 @@
+
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.*;
 
 import java.io.IOException;
 
-
+/**
+ *
+ * @author khalil2535
+ */
 public class UcasWeb {
-    private static WebClient webClient = new WebClient();
 
+    private static final WebClient webClient = new WebClient();
 
     public static Authorization getAuthorized(String username, String password) {
         try {

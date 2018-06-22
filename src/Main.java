@@ -1,3 +1,4 @@
+
 import javax.swing.*;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -11,6 +12,7 @@ import java.util.Scanner;
  * @author khalil2535
  */
 public class Main {
+
     public static void main(String[] args) {
         final int option = JOptionPane.showConfirmDialog(null, "Do you want me to pop up when you get new grades ?");
         if (option == 0)// 0 = yes choice
@@ -60,15 +62,16 @@ public class Main {
                 writeOnCacheFile(username + "\n" + password);
             }
 
-
             String newMarksSite = "ф";
-            if (!new File("src/MarksSite.html").exists())
+            if (!new File("src/MarksSite.html").exists()) {
                 writeOnMarksSite(newMarksSite);
+            }
             while (newMarksSite.contains("ф")) {
                 System.out.println("waiting really");
                 newMarksSite = UcasWeb.getMarksPage();
-                if (newMarksSite.contains("ф")) continue;
-                else if (getSavedMarksSite().contains("ф")) {
+                if (newMarksSite.contains("ф")) {
+                    continue;
+                } else if (getSavedMarksSite().contains("ф")) {
                     writeOnMarksSite(newMarksSite);
                     continue;
                 } else if (!getSavedMarksSite().equals(newMarksSite)) {
@@ -83,13 +86,11 @@ public class Main {
                 newMarksSite = "ф";
             }
 
-
         } else if (option == 1) //1 = no choice
         {
             JOptionPane.showMessageDialog(null, "Thanks for using this program");
         }
     }
-
 
     private static void writeOnCacheFile(String text) {
         try {
@@ -120,8 +121,9 @@ public class Main {
             return "ф";
         }
         StringBuilder MarksSiteAsString = new StringBuilder();
-        while (MarksSiteScanner.hasNext())
+        while (MarksSiteScanner.hasNext()) {
             MarksSiteAsString.append(MarksSiteScanner.nextLine());
+        }
         return MarksSiteAsString.toString();
     }
 }

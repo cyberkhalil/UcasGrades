@@ -1,4 +1,10 @@
+
+/**
+ *
+ * @author khalil2535
+ */
 public final class Utilities {
+
     private Utilities() {
     }
 
