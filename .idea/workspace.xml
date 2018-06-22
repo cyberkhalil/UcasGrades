@@ -2,10 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e3f47c73-dd5d-4f87-9e5e-2384fe11f5c3" name="Default" comment="init project">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UcasGrades.iml" beforeDir="false" afterPath="$PROJECT_DIR$/UcasGrades.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nbproject/project.properties" beforeDir="false" afterPath="$PROJECT_DIR$/nbproject/project.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/UcasGrades/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/UcasGrades/Main.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="nbproject/private/private.properties" />
@@ -19,11 +17,20 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Main.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Main.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/UcasGrades/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="147">
-              <caret line="89" column="25" selection-start-line="89" selection-start-column="25" selection-end-line="89" selection-end-column="25" />
+            <state relative-caret-position="39">
+              <caret line="104" column="6" selection-start-line="104" selection-start-column="6" selection-end-line="104" selection-end-column="6" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name=".gitignore" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/.gitignore">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="30">
+              <caret line="2" column="19" selection-start-line="2" selection-start-column="19" selection-end-line="2" selection-end-column="19" />
             </state>
           </provider>
         </entry>
@@ -43,11 +50,15 @@
       <find>printException</find>
       <find>src</find>
       <find>cache/cache</find>
+      <find>$PROJECT_DIR$/../../../../..</find>
     </findStrings>
     <replaceStrings>
       <replace>cache</replace>
       <replace>cache/temp.cache</replace>
     </replaceStrings>
+    <dirStrings>
+      <dir>$PROJECT_DIR$</dir>
+    </dirStrings>
   </component>
   <component name="Git.Settings">
     <option name="UPDATE_CHANGES_POLICY" value="SHELVE" />
@@ -80,6 +91,7 @@
         <option value="$PROJECT_DIR$/src/UcasGrades/UcasWeb.java" />
         <option value="$PROJECT_DIR$/UcasGrades.iml" />
         <option value="$PROJECT_DIR$/src/UcasGrades/Main.java" />
+        <option value="$PROJECT_DIR$/.gitignore" />
       </list>
     </option>
   </component>
@@ -119,27 +131,6 @@
           <expand>
             <path>
               <item name="UcasGrades" type="b2602c69:ProjectViewProjectNode" />
-              <item name="UcasGrades" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="UcasGrades" type="b2602c69:ProjectViewProjectNode" />
-              <item name="UcasGrades" type="462c0819:PsiDirectoryNode" />
-              <item name=".idea" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="UcasGrades" type="b2602c69:ProjectViewProjectNode" />
-              <item name="UcasGrades" type="462c0819:PsiDirectoryNode" />
-              <item name="cache" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="UcasGrades" type="b2602c69:ProjectViewProjectNode" />
-              <item name="UcasGrades" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="UcasGrades" type="b2602c69:ProjectViewProjectNode" />
-              <item name="UcasGrades" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="UcasGrades" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -272,12 +263,12 @@
       <window_info anchor="right" id="Capture Analysis" order="0" />
       <window_info anchor="bottom" id="Event Log" order="1" sideWeight="0.5030349" side_tool="true" weight="0.3885918" />
       <window_info anchor="right" id="Maven Projects" order="3" weight="0.32928678" />
-      <window_info active="true" anchor="bottom" id="Run" order="6" sideWeight="0.4969651" visible="true" weight="0.3368984" />
+      <window_info anchor="bottom" id="Run" order="6" sideWeight="0.4969651" visible="true" weight="0.27272728" />
       <window_info anchor="bottom" id="Version Control" order="2" sideWeight="0.4969651" weight="0.32798573" />
       <window_info anchor="bottom" id="Terminal" order="0" />
       <window_info id="Capture Tool" order="2" />
       <window_info id="Designer" order="0" />
-      <window_info content_ui="combo" id="Project" order="5" visible="true" weight="0.09939302" />
+      <window_info active="true" content_ui="combo" id="Project" order="5" visible="true" weight="0.14871016" />
       <window_info anchor="bottom" id="Find" order="5" weight="0.34166667" />
       <window_info id="Structure" order="6" side_tool="true" weight="0.25" />
       <window_info anchor="right" id="Ant Build" order="7" weight="0.24962063" />
@@ -509,13 +500,6 @@
     <entry file="file://$PROJECT_DIR$/build/built-jar.properties">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
-          <caret line="1" column="6" lean-forward="true" selection-start-line="1" selection-start-column="6" selection-end-line="1" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/README.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;MarkdownPreviewEditor]">
         <state split_layout="SPLIT">
@@ -579,8 +563,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/UcasGrades/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="147">
-          <caret line="89" column="25" selection-start-line="89" selection-start-column="25" selection-end-line="89" selection-end-column="25" />
+        <state relative-caret-position="39">
+          <caret line="104" column="6" selection-start-line="104" selection-start-column="6" selection-end-line="104" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="2" column="19" selection-start-line="2" selection-start-column="19" selection-end-line="2" selection-end-column="19" />
         </state>
       </provider>
     </entry>
