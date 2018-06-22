@@ -1,3 +1,4 @@
+package UcasGrades;
 
 import javax.swing.*;
 import java.io.File;
@@ -13,6 +14,11 @@ import java.util.Scanner;
  */
 public class Main {
 
+    /**
+     * main method which start the program.
+     *
+     * @param args
+     */
     public static void main(String[] args) {
         final int option = JOptionPane.showConfirmDialog(null, "Do you want me to pop up when you get new grades ?");
         if (option == 0)// 0 = yes choice
@@ -22,14 +28,14 @@ public class Main {
             boolean keepLogin = false;
             Scanner cacheScanner = null;
 
-            File cache = new File("src/cache");
+            File cache = new File("cache/cache");
             if (cache.exists()) {
                 try {
-                    cacheScanner = new Scanner(new File("src/cache"));
+                    cacheScanner = new Scanner(new File("cache/cache"));
                 } catch (FileNotFoundException e) {
                     Utilities.printException("Exception in the Scanner of the cache file", e);
                 }
-                if (cacheScanner.hasNext()) {
+                if (cacheScanner != null && cacheScanner.hasNext()) {
                     username = cacheScanner.nextLine();
                     password = cacheScanner.nextLine();
                     cacheScanner.close();
@@ -39,6 +45,8 @@ public class Main {
                 password = JOptionPane.showInputDialog("Enter your password");
                 keepLogin = JOptionPane.showConfirmDialog(null, "Remember username & password ?") == 0;//0 = yes choice
             }
+            cache.getParentFile().mkdirs();
+
             Authorization authorization = Authorization.NOT_FOUND;
             while (authorization != Authorization.ACCEPTED) {
 
@@ -48,7 +56,7 @@ public class Main {
                     JOptionPane.showMessageDialog(null, "You've Entered wrong ID or password !");
                     writeOnCacheFile("");
                     break;
-                    //TODO reasgk user for username and password
+                    //TODO reask user for username and password
                 } else if (authorization == Authorization.NOT_FOUND) {
                     try {
                         Thread.sleep(5_000);// 5 Seconds
@@ -63,20 +71,22 @@ public class Main {
             }
 
             String newMarksSite = "ф";
-            if (!new File("src/MarksSite.html").exists()) {
+            if (!new File("cache/MarksSite.html").exists()) {
                 writeOnMarksSite(newMarksSite);
             }
             while (newMarksSite.contains("ф")) {
-                System.out.println("waiting really");
-                newMarksSite = UcasWeb.getMarksPage();
-                if (newMarksSite.contains("ф")) {
-                    continue;
-                } else if (getSavedMarksSite().contains("ф")) {
+                newMarksSite = "";
+                Scanner s = new Scanner(UcasWeb.getMarksPage());
+                while (s.hasNext()) {
+                    newMarksSite += s.next();
+                }
+                if (getSavedMarksSite().contains("ф")) {
                     writeOnMarksSite(newMarksSite);
-                    continue;
-                } else if (!getSavedMarksSite().equals(newMarksSite)) {
+                }
+                if (!getSavedMarksSite().equals(newMarksSite)) {
                     JOptionPane.showMessageDialog(null, "Hey ! \n new grade has been submitted !!");
                     writeOnMarksSite(newMarksSite);
+                    break;
                 }
                 try {
                     Thread.sleep(60_000);// check every minute
@@ -92,38 +102,49 @@ public class Main {
         }
     }
 
+    /**
+     * write the username and password in the cache file
+     *
+     * @param text
+     */
     private static void writeOnCacheFile(String text) {
-        try {
-            FileWriter fw = new FileWriter("src/cache");
+        try (FileWriter fw = new FileWriter("cache/cache")) {
             fw.append(text).flush();
-            fw.close();
         } catch (IOException e) {
             Utilities.printException("Exception in writing on cache file", e);
         }
     }
 
+    /**
+     * write new marks site instead of old one
+     *
+     * @param HTMLPageAsString
+     */
     private static void writeOnMarksSite(String HTMLPageAsString) {
-        try {
-            FileWriter fw = new FileWriter("src/MarksSite.html");
+        try (FileWriter fw = new FileWriter("cache/MarksSite.html")) {
             fw.append(HTMLPageAsString).flush();
-            fw.close();
         } catch (IOException e) {
             Utilities.printException("Exception in writeOnMarksSite method", e);
         }
     }
 
+    /**
+     * method to get the saved old marks site
+     *
+     * @return Old marks site as HTML
+     */
     private static String getSavedMarksSite() {
-        Scanner MarksSiteScanner = null;
+        Scanner MarksSiteScanner;
         try {
-            MarksSiteScanner = new Scanner(new File("src/MarksSite.html"));
+            MarksSiteScanner = new Scanner(new File("cache/MarksSite.html"));
         } catch (FileNotFoundException e) {
             Utilities.printException("FileNotFoundException in getMarksSite method", e);
             return "ф";
         }
-        StringBuilder MarksSiteAsString = new StringBuilder();
+        String MarksSiteAsString = "";
         while (MarksSiteScanner.hasNext()) {
-            MarksSiteAsString.append(MarksSiteScanner.nextLine());
+            MarksSiteAsString += MarksSiteScanner.next();
         }
-        return MarksSiteAsString.toString();
+        return MarksSiteAsString;
     }
 }

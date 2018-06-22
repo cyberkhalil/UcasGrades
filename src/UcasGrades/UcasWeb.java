@@ -1,3 +1,4 @@
+package UcasGrades;
 
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.*;
@@ -5,6 +6,7 @@ import com.gargoylesoftware.htmlunit.html.*;
 import java.io.IOException;
 
 /**
+ * class for getting the information about marks from ucas website
  *
  * @author khalil2535
  */
@@ -35,7 +37,7 @@ public class UcasWeb {
                 link.click();
             }
             HtmlForm tempForm = ((HtmlForm) ((HtmlPage) webClient.getPage("https://my.ucas.edu.ps/Registration/transcript")).getElementById("form1"));
-            return (tempForm.getInputsByName("txtUsername").size() == 0) ? Authorization.ACCEPTED : Authorization.DENIED;
+            return (tempForm.getInputsByName("txtUsername").isEmpty()) ? Authorization.ACCEPTED : Authorization.DENIED;
         } catch (IOException e) {
             Utilities.printException("Didn't get Authorized", e);
             return Authorization.NOT_FOUND;
