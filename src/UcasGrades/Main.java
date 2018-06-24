@@ -14,8 +14,35 @@ import java.util.Scanner;
  */
 public class Main {
 
-    private static final File LOGIN_CACHE_FILE = new File("cache/Login.cache");
-    private static final File MARKS_SITE_CACHE_FILE = new File("cache/MarksSite.html");
+    private static File CACHE_FOLDER = new File("cache");
+
+    private static File getCACHE_FOLDER() {
+        return CACHE_FOLDER;
+    }
+
+    private static void makeCashFolderHidden() {
+        String OS = System.getProperty("os.name", "generic").toLowerCase();
+        if (OS.contains("win")) {
+            try {
+                Process p = Runtime.getRuntime().exec("attrib +H " + getCACHE_FOLDER().getParent());
+                p.waitFor();
+            } catch (IOException | InterruptedException e) {
+                Utilities.printException("error in making folder cache hidden", e);
+            }
+        } else {
+            if (CACHE_FOLDER.renameTo(new File("." + CACHE_FOLDER.getPath()))) {
+                CACHE_FOLDER = new File("." + CACHE_FOLDER.getPath());
+            }
+        }
+    }
+
+    private static File getLOGIN_CACHE_FILE() {
+        return new File(CACHE_FOLDER.getPath() + File.separator + "UCAS Grades" + File.separator + "Login.cache");
+    }
+
+    private static File getMARKS_SITE_CACHE_FILE() {
+        return new File(CACHE_FOLDER.getPath() + File.separator + "UCAS Grades" + File.separator + "MarksSite.html");
+    }
 
     /**
      * main method which start the program.
@@ -36,8 +63,8 @@ public class Main {
         String username = null;
         String password = null;
 
-        if (LOGIN_CACHE_FILE.exists()) {
-            try (Scanner cacheScanner = new Scanner(LOGIN_CACHE_FILE)) {
+        if (getLOGIN_CACHE_FILE().exists()) {
+            try (Scanner cacheScanner = new Scanner(getLOGIN_CACHE_FILE())) {
                 if (cacheScanner.hasNext()) {
                     username = cacheScanner.nextLine();
                 }
@@ -52,24 +79,29 @@ public class Main {
         } else {
             //reaching here means LOGIN_CACHE_FILE doesn't exist but we just need it's parent path to exist
 
-            if (LOGIN_CACHE_FILE.getParentFile().mkdirs()) {
-                // TODO make the cache directory empty
+            if (getCACHE_FOLDER().mkdirs()) {
+                makeCashFolderHidden();
             } else {
-                Utilities.printException("in LOGIN_CACHE_FILE mkdirs method", new Exception("Cannot create cache named directory"));
+                Utilities.printException("in getCACHE_FOLDER mkdirs or makeCashFolderHidden ", new Exception("Cannot create cache named directory"));
             }
         }
 
         if (username == null || password == null) {
             username = JOptionPane.showInputDialog("Enter your university ID");
-            password = JOptionPane.showInputDialog("Enter your password");
-            int keepLoginStateNumber = JOptionPane.showConfirmDialog(null, "Remember username & password ?");
-
-            boolean keepLogin = keepLoginStateNumber == 0;//0 = yes choice
-
-            if (username == null || password == null || keepLoginStateNumber == 2) {
+            if (username == null) {
                 JOptionPane.showMessageDialog(null, "Sorry for asking you some private data but we can't see your grades without it.\n Thanks for using this program wish you'll change your mind later.");
                 System.exit(0);
-            } else if (keepLogin) {
+            }
+            password = JOptionPane.showInputDialog("Enter your password");
+            if (password == null) {
+                JOptionPane.showMessageDialog(null, "Sorry for asking you some private data but we can't see your grades without it.\n Thanks for using this program wish you'll change your mind later.");
+                System.exit(0);
+            }
+            int keepLoginStateNumber = JOptionPane.showConfirmDialog(null, "Remember username & password ?");
+            if (keepLoginStateNumber == 2) {
+                JOptionPane.showMessageDialog(null, "Sorry for asking you some private data but we can't see your grades without it.\n Thanks for using this program wish you'll change your mind later.");
+                System.exit(0);
+            } else if (keepLoginStateNumber == 0) {
                 writeOnLoginCacheFile(username + "\n" + password);
             }
         }
@@ -91,7 +123,7 @@ public class Main {
         }
 
         String newMarksSite = "ф";
-        if (!MARKS_SITE_CACHE_FILE.exists()) {
+        if (!getMARKS_SITE_CACHE_FILE().exists()) {
             writeOnMarksSite(newMarksSite);
         }
         while (newMarksSite.contains("ф")) {
@@ -129,6 +161,10 @@ public class Main {
      * @param text (id & password)
      */
     private static void writeOnLoginCacheFile(String text) {
+        File LOGIN_CACHE_FILE = getLOGIN_CACHE_FILE();
+        if (!LOGIN_CACHE_FILE.getParentFile().exists()) {
+            LOGIN_CACHE_FILE.getParentFile().mkdir();
+        }
         try (FileWriter fw = new FileWriter(LOGIN_CACHE_FILE)) {
             fw.append(text).flush();
         } catch (IOException e) {
@@ -142,6 +178,10 @@ public class Main {
      * @param HTMLPageAsString to write in MARKS_SITE_CACHE_FILE
      */
     private static void writeOnMarksSite(String HTMLPageAsString) {
+        File MARKS_SITE_CACHE_FILE = getMARKS_SITE_CACHE_FILE();
+        if (!MARKS_SITE_CACHE_FILE.getParentFile().exists()) {
+            MARKS_SITE_CACHE_FILE.getParentFile().mkdir();
+        }
         try (FileWriter fw = new FileWriter(MARKS_SITE_CACHE_FILE)) {
             fw.append(HTMLPageAsString).flush();
         } catch (IOException e) {
@@ -157,7 +197,7 @@ public class Main {
     private static String getSavedMarksSite() {
         Scanner MarksSiteScanner;
         try {
-            MarksSiteScanner = new Scanner(MARKS_SITE_CACHE_FILE);
+            MarksSiteScanner = new Scanner(getMARKS_SITE_CACHE_FILE());
         } catch (FileNotFoundException e) {
             Utilities.printException("FileNotFoundException in getMarksSite method", e);
             return "ф";
