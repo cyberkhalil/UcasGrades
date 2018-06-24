@@ -6,11 +6,11 @@ import com.gargoylesoftware.htmlunit.html.*;
 import java.io.IOException;
 
 /**
- * class for getting the information about marks from ucas website
+ * class for getting the information about marks from UCAS website
  *
  * @author khalil2535
  */
-public class UcasWeb {
+class UcasWeb {
 
     private static final WebClient webClient = new WebClient();
 

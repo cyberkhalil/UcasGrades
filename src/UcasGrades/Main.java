@@ -1,5 +1,7 @@
 package UcasGrades;
 
+import ciphers.Encryption;
+
 import javax.swing.*;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -17,7 +19,7 @@ public class Main {
     private static File CACHE_FOLDER = new File("cache");
 
     private static File getCACHE_FOLDER() {
-        return CACHE_FOLDER;
+        return getCacheFolder();
     }
 
     private static void makeCashFolderHidden() {
@@ -30,18 +32,33 @@ public class Main {
                 Utilities.printException("error in making folder cache hidden", e);
             }
         } else {
-            if (CACHE_FOLDER.renameTo(new File("." + CACHE_FOLDER.getPath()))) {
-                CACHE_FOLDER = new File("." + CACHE_FOLDER.getPath());
+            if (new File(".cache").exists()) {
+                if (!getCacheFolder().delete()) {
+                    Utilities.printException("in makeCashFolderHidden method", new Exception("can't remove cache folder"));
+                }
+                setCacheFolder(new File(".cache"));
+
+            } else {
+                if (getCacheFolder().renameTo(new File("." + getCacheFolder().getPath()))) {
+                    setCacheFolder(new File("." + getCacheFolder().getPath()));
+                } else {
+                    Utilities.printException("Error in make cache folder hidden", new Exception("there is no any "
+                            + "folder named .cache but can't rename cache folder to .cache"));
+                }
             }
         }
     }
 
     private static File getLOGIN_CACHE_FILE() {
-        return new File(CACHE_FOLDER.getPath() + File.separator + "UCAS Grades" + File.separator + "Login.cache");
+        if (!getCACHE_FOLDER().isHidden()) makeCashFolderHidden();
+        return new File(getCacheFolder().getPath() + File.separator + "UCAS Grades" + File.separator
+                + "Login.cache");
     }
 
     private static File getMARKS_SITE_CACHE_FILE() {
-        return new File(CACHE_FOLDER.getPath() + File.separator + "UCAS Grades" + File.separator + "MarksSite.html");
+        if (!getCACHE_FOLDER().isHidden()) makeCashFolderHidden();
+        return new File(getCacheFolder().getPath() + File.separator + "UCAS Grades" + File.separator
+                + "MarksSite.html");
     }
 
     /**
@@ -50,7 +67,8 @@ public class Main {
      * @param args not used
      */
     public static void main(String[] args) {
-        final int option = JOptionPane.showConfirmDialog(null, "Do you want me to pop up when you get new grades ?");
+        final int option = JOptionPane.showConfirmDialog(null, "Do you want me to pop up when"
+                + " you get new grades ?");
 
         if (option != 0)// 0 = yes choice
         {
@@ -66,26 +84,23 @@ public class Main {
         if (getLOGIN_CACHE_FILE().exists()) {
             try (Scanner cacheScanner = new Scanner(getLOGIN_CACHE_FILE())) {
                 if (cacheScanner.hasNext()) {
-                    username = cacheScanner.nextLine();
+                    username = cacheScanner.next();
+                    if (cacheScanner.hasNext()) {
+                        password = Encryption.decode(cacheScanner.next(), Integer.parseInt(username));
+                    }
                 }
-                if (cacheScanner.hasNext()) {
-                    password = cacheScanner.nextLine();
-                }
-                // if cacheScanner doesn't have next that means LOGIN_CACHE_FILE is empty or don't contain username or password
             } catch (FileNotFoundException e) {
                 Utilities.printException("Exception in the Scanner of the cache file", e);
                 System.exit(0);
             }
         } else {
             //reaching here means LOGIN_CACHE_FILE doesn't exist but we just need it's parent path to exist
-
             if (getCACHE_FOLDER().mkdirs()) {
                 makeCashFolderHidden();
             } else {
                 Utilities.printException("in getCACHE_FOLDER mkdirs or makeCashFolderHidden ", new Exception("Cannot create cache named directory"));
             }
         }
-
         if (username == null || password == null) {
             username = JOptionPane.showInputDialog("Enter your university ID");
             if (username == null) {
@@ -102,7 +117,7 @@ public class Main {
                 JOptionPane.showMessageDialog(null, "Sorry for asking you some private data but we can't see your grades without it.\n Thanks for using this program wish you'll change your mind later.");
                 System.exit(0);
             } else if (keepLoginStateNumber == 0) {
-                writeOnLoginCacheFile(username + "\n" + password);
+                writeOnLoginCacheFile(username + "\n" + Encryption.encode(password, Integer.parseInt(username)));
             }
         }
 
@@ -207,5 +222,13 @@ public class Main {
             MarksSiteAsStringBuilder.append(MarksSiteScanner.next());
         }
         return MarksSiteAsStringBuilder.toString();
+    }
+
+    private static File getCacheFolder() {
+        return CACHE_FOLDER;
+    }
+
+    private static void setCacheFolder(File cacheFolder) {
+        CACHE_FOLDER = cacheFolder;
     }
 }
