@@ -15,4 +15,4 @@ After downloading just open the jar file which named by [UcasGrades.jar] .
 License
 ----
 **Free open source**
-that's mean you can use this code or any part of it .
+that's mean you can use this code or any part of it ,Under GNU Version 3 License
