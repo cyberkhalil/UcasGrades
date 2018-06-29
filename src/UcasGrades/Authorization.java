@@ -1,7 +1,7 @@
 package UcasGrades;
 
 /**
- * Enum for Authorization States
+ * this Enum for Authorization States
  *
  * @author khalil2535
  */

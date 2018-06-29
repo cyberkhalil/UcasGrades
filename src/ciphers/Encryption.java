@@ -18,7 +18,7 @@ public class Encryption {
      * @return Encrypted message
      */
     public static String encode(String message, int shift) {
-        String encoded = "";
+        StringBuilder encoded = new StringBuilder();
 
         while (shift >= 26) { // 26 = number of latin letters
             shift -= 26;
@@ -33,18 +33,18 @@ public class Encryption {
             if (IsCapitalLatinLetter(current)) {
 
                 current += shift;
-                encoded += (char) (current > 'Z' ? current - 26 : current); // 26 = number of latin letters
+                encoded.append((char) (current > 'Z' ? current - 26 : current)); // 26 = number of latin letters
 
             } else if (IsSmallLatinLetter(current)) {
 
                 current += shift;
-                encoded += (char) (current > 'z' ? current - 26 : current); // 26 = number of latin letters
+                encoded.append((char) (current > 'z' ? current - 26 : current)); // 26 = number of latin letters
 
             } else {
-                encoded += current;
+                encoded.append(current);
             }
         }
-        return encoded;
+        return encoded.toString();
     }
 
     /**
@@ -56,7 +56,7 @@ public class Encryption {
      * @return message
      */
     public static String decode(String encryptedMessage, int shift) {
-        String decoded = "";
+        StringBuilder decoded = new StringBuilder();
 
         while (shift >= 26) { // 26 = number of latin letters
             shift -= 26;
@@ -68,18 +68,18 @@ public class Encryption {
             if (IsCapitalLatinLetter(current)) {
 
                 current -= shift;
-                decoded += (char) (current < 'A' ? current + 26 : current);// 26 = number of latin letters
+                decoded.append((char) (current < 'A' ? current + 26 : current));// 26 = number of latin letters
 
             } else if (IsSmallLatinLetter(current)) {
 
                 current -= shift;
-                decoded += (char) (current < 'a' ? current + 26 : current);// 26 = number of latin letters
+                decoded.append((char) (current < 'a' ? current + 26 : current));// 26 = number of latin letters
 
             } else {
-                decoded += current;
+                decoded.append(current);
             }
         }
-        return decoded;
+        return decoded.toString();
     }
 
     /**

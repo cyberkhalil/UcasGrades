@@ -33,32 +33,33 @@ public class Main {
             }
         } else {
             if (new File(".cache").exists()) {
-                if (!getCacheFolder().delete()) {
-                    Utilities.printException("in makeCashFolderHidden method", new Exception("can't remove cache folder"));
+                if (getCacheFolder().exists() && !getCacheFolder().delete()) {
+                    Utilities.printException("in makeCashFolderHidden method",
+                            new Exception("can't remove cache folder"));
                 }
                 setCacheFolder(new File(".cache"));
-
             } else {
                 if (getCacheFolder().renameTo(new File("." + getCacheFolder().getPath()))) {
                     setCacheFolder(new File("." + getCacheFolder().getPath()));
                 } else {
-                    Utilities.printException("Error in make cache folder hidden", new Exception("there is no any "
-                            + "folder named .cache but can't rename cache folder to .cache"));
+                    Utilities.printException("Error in make cache folder hidden", new Exception(
+                            "there is no any " + "folder named .cache but can't rename cache folder to .cache"));
                 }
             }
         }
     }
 
     private static File getLOGIN_CACHE_FILE() {
-        if (!getCACHE_FOLDER().isHidden()) makeCashFolderHidden();
-        return new File(getCacheFolder().getPath() + File.separator + "UCAS Grades" + File.separator
-                + "Login.cache");
+        if (!getCACHE_FOLDER().isHidden())
+            makeCashFolderHidden();
+        return new File(getCacheFolder().getPath() + File.separator + "UCAS Grades" + File.separator + "Login.cache");
     }
 
     private static File getMARKS_SITE_CACHE_FILE() {
-        if (!getCACHE_FOLDER().isHidden()) makeCashFolderHidden();
-        return new File(getCacheFolder().getPath() + File.separator + "UCAS Grades" + File.separator
-                + "MarksSite.html");
+        if (!getCACHE_FOLDER().isHidden())
+            makeCashFolderHidden();
+        return new File(
+                getCacheFolder().getPath() + File.separator + "UCAS Grades" + File.separator + "MarksSite.html");
     }
 
     /**
@@ -67,12 +68,12 @@ public class Main {
      * @param args not used
      */
     public static void main(String[] args) {
-        final int option = JOptionPane.showConfirmDialog(null, "Do you want me to pop up when"
-                + " you get new grades ?");
+        final int option = JOptionPane.showConfirmDialog(null,
+                "Do you want me to pop up when" + " you get new grades ?");
 
         if (option != 0)// 0 = yes choice
         {
-            if (option == 1) //1 = no choice
+            if (option == 1) // 1 = no choice
             {
                 JOptionPane.showMessageDialog(null, "Thanks for using this program");
             }
@@ -94,27 +95,32 @@ public class Main {
                 System.exit(0);
             }
         } else {
-            //reaching here means LOGIN_CACHE_FILE doesn't exist but we just need it's parent path to exist
+            // reaching here means LOGIN_CACHE_FILE doesn't exist but we just need it's
+            // parent path to exist
             if (getCACHE_FOLDER().mkdirs()) {
                 makeCashFolderHidden();
             } else {
-                Utilities.printException("in getCACHE_FOLDER mkdirs or makeCashFolderHidden ", new Exception("Cannot create cache named directory"));
+                Utilities.printException("in getCACHE_FOLDER mkdirs or makeCashFolderHidden ",
+                        new Exception("Cannot create cache named directory"));
             }
         }
         if (username == null || password == null) {
             username = JOptionPane.showInputDialog("Enter your university ID");
             if (username == null) {
-                JOptionPane.showMessageDialog(null, "Sorry for asking you some private data but we can't see your grades without it.\n Thanks for using this program wish you'll change your mind later.");
+                JOptionPane.showMessageDialog(null,
+                        "Sorry for asking you some private data but we can't see your grades without it.\n Thanks for using this program wish you'll change your mind later.");
                 System.exit(0);
             }
             password = JOptionPane.showInputDialog("Enter your password");
             if (password == null) {
-                JOptionPane.showMessageDialog(null, "Sorry for asking you some private data but we can't see your grades without it.\n Thanks for using this program wish you'll change your mind later.");
+                JOptionPane.showMessageDialog(null,
+                        "Sorry for asking you some private data but we can't see your grades without it.\n Thanks for using this program wish you'll change your mind later.");
                 System.exit(0);
             }
             int keepLoginStateNumber = JOptionPane.showConfirmDialog(null, "Remember username & password ?");
             if (keepLoginStateNumber == 2) {
-                JOptionPane.showMessageDialog(null, "Sorry for asking you some private data but we can't see your grades without it.\n Thanks for using this program wish you'll change your mind later.");
+                JOptionPane.showMessageDialog(null,
+                        "Sorry for asking you some private data but we can't see your grades without it.\n Thanks for using this program wish you'll change your mind later.");
                 System.exit(0);
             } else if (keepLoginStateNumber == 0) {
                 writeOnLoginCacheFile(username + "\n" + Encryption.encode(password, Integer.parseInt(username)));
@@ -127,7 +133,7 @@ public class Main {
             if (userAuthorization == Authorization.DENIED) {
                 JOptionPane.showMessageDialog(null, "You've Entered wrong ID or password !");
                 break;
-                //TODO re ask user for username and password
+                // TODO re ask user for username and password
             } else if (userAuthorization == Authorization.NOT_FOUND) {
                 try {
                     Thread.sleep(5_000);// 5 Seconds
@@ -150,6 +156,7 @@ public class Main {
             while (s.hasNext()) {
                 newMarksSiteAsStringBuilder.append(s.next());
             }
+            s.close();
             newMarksSite = newMarksSiteAsStringBuilder.toString();
 
             if (oldMarksSite.contains("ф")) {
@@ -178,7 +185,9 @@ public class Main {
     private static void writeOnLoginCacheFile(String text) {
         File LOGIN_CACHE_FILE = getLOGIN_CACHE_FILE();
         if (!LOGIN_CACHE_FILE.getParentFile().exists()) {
-            LOGIN_CACHE_FILE.getParentFile().mkdir();
+            if (LOGIN_CACHE_FILE.getParentFile().mkdir()) {
+                Utilities.printException("Exception in writeOnLoginCacheFile", new Exception("Can't make new Folder"));
+            }
         }
         try (FileWriter fw = new FileWriter(LOGIN_CACHE_FILE)) {
             fw.append(text).flush();
@@ -195,7 +204,9 @@ public class Main {
     private static void writeOnMarksSite(String HTMLPageAsString) {
         File MARKS_SITE_CACHE_FILE = getMARKS_SITE_CACHE_FILE();
         if (!MARKS_SITE_CACHE_FILE.getParentFile().exists()) {
-            MARKS_SITE_CACHE_FILE.getParentFile().mkdir();
+            if (MARKS_SITE_CACHE_FILE.getParentFile().mkdir()) {
+                Utilities.printException("Exception in writeOnMarksSite", new Exception("Can't make new Folder"));
+            }
         }
         try (FileWriter fw = new FileWriter(MARKS_SITE_CACHE_FILE)) {
             fw.append(HTMLPageAsString).flush();
@@ -221,6 +232,7 @@ public class Main {
         while (MarksSiteScanner.hasNext()) {
             MarksSiteAsStringBuilder.append(MarksSiteScanner.next());
         }
+        MarksSiteScanner.close();
         return MarksSiteAsStringBuilder.toString();
     }
 

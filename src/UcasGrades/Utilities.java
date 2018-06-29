@@ -5,7 +5,7 @@ package UcasGrades;
  *
  * @author khalil2535
  */
-public final class Utilities {
+final class Utilities {
 
     private Utilities() {
     }
@@ -16,7 +16,7 @@ public final class Utilities {
      * @param s message to print before printing the exception and it's status.
      * @param e the Exception to print it's stack and it's message.
      */
-    public static void printException(String s, Exception e) {
+    static void printException(String s, Exception e) {
         System.out.println(s + "\n" + e.toString() + "\n" + e.getMessage());
     }
 }

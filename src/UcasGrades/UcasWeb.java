@@ -14,7 +14,7 @@ class UcasWeb {
 
     private static final WebClient webClient = new WebClient();
 
-    public static Authorization getAuthorized(String username, String password) {
+    static Authorization getAuthorized(String username, String password) {
         try {
             final HtmlPage page1 = webClient.getPage("https://my.ucas.edu.ps/login?backurl=/home");
 
@@ -36,7 +36,8 @@ class UcasWeb {
             if (link != null) {
                 link.click();
             }
-            HtmlForm tempForm = ((HtmlForm) ((HtmlPage) webClient.getPage("https://my.ucas.edu.ps/Registration/transcript")).getElementById("form1"));
+            HtmlForm tempForm = ((HtmlForm) ((HtmlPage) webClient
+                    .getPage("https://my.ucas.edu.ps/Registration/transcript")).getElementById("form1"));
             return (tempForm.getInputsByName("txtUsername").isEmpty()) ? Authorization.ACCEPTED : Authorization.DENIED;
         } catch (IOException e) {
             Utilities.printException("Didn't get Authorized", e);
@@ -44,9 +45,10 @@ class UcasWeb {
         }
     }
 
-    public static String getMarksPage() {
+    static String getMarksPage() {
         try {
-            return webClient.getPage("https://my.ucas.edu.ps/Registration/transcript").getWebResponse().getContentAsString();
+            return webClient.getPage("https://my.ucas.edu.ps/Registration/transcript").getWebResponse()
+                    .getContentAsString();
         } catch (IOException e) {
             Utilities.printException("Exception in getMarksPage method", e);
         }
