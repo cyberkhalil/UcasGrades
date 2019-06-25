@@ -1,21 +1,294 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module type="JAVA_MODULE" version="4">
+  <component name="EclipseModuleManager">
+    <libelement value="jar://$MODULE_DIR$/dist/lib/commons-codec-1.10.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/dist/lib/commons-io-2.6.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/dist/lib/commons-lang3-3.7.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/dist/lib/commons-logging-1.2.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/dist/lib/commons-net-3.6.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/dist/lib/commons-text-1.3.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/dist/lib/htmlunit-2.31.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/dist/lib/htmlunit-core-js-2.31.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/dist/lib/htmlunit-cssparser-1.0.0.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/dist/lib/httpclient-4.5.5.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/dist/lib/httpcore-4.4.9.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/dist/lib/httpmime-4.5.5.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/dist/lib/jetty-client-9.4.10.v20180503.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/dist/lib/jetty-http-9.4.10.v20180503.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/dist/lib/jetty-io-9.4.10.v20180503.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/dist/lib/jetty-util-9.4.10.v20180503.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/dist/lib/jetty-xml-9.4.10.v20180503.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/dist/lib/neko-htmlunit-2.31.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/dist/lib/serializer-2.7.2.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/dist/lib/websocket-api-9.4.10.v20180503.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/dist/lib/websocket-client-9.4.10.v20180503.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/dist/lib/websocket-common-9.4.10.v20180503.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/dist/lib/xalan-2.7.2.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/dist/lib/xercesImpl-2.11.0.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/dist/lib/xml-apis-1.4.01.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/dist/UcasGrades.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/libs/commons-codec-1.10.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/libs/commons-io-2.6.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/libs/commons-lang3-3.7.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/libs/commons-logging-1.2.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/libs/commons-net-3.6.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/libs/commons-text-1.3.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/libs/htmlunit-2.31.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/libs/htmlunit-core-js-2.31.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/libs/htmlunit-cssparser-1.0.0.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/libs/httpclient-4.5.5.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/libs/httpcore-4.4.9.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/libs/httpmime-4.5.5.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/libs/jetty-client-9.4.10.v20180503.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/libs/jetty-http-9.4.10.v20180503.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/libs/jetty-io-9.4.10.v20180503.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/libs/jetty-util-9.4.10.v20180503.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/libs/jetty-xml-9.4.10.v20180503.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/libs/neko-htmlunit-2.31.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/libs/serializer-2.7.2.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/libs/websocket-api-9.4.10.v20180503.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/libs/websocket-client-9.4.10.v20180503.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/libs/websocket-common-9.4.10.v20180503.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/libs/xalan-2.7.2.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/libs/xercesImpl-2.11.0.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/libs/xml-apis-1.4.01.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/out/artifacts/UcasGrades_jar/UcasGrades.jar!/" />
+    <src_description expected_position="1">
+      <src_folder value="file://$MODULE_DIR$/src" expected_position="1" />
+    </src_description>
+  </component>
   <component name="NewModuleRootManager" inherit-compiler-output="true">
+    <exclude-output />
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/test" isTestSource="true" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module-library">
-      <library>
+      <library name="libs/commons-codec-1.10.jar">
         <CLASSES>
-          <root url="file://$MODULE_DIR$/libs" />
+          <root url="jar://$MODULE_DIR$/libs/commons-codec-1.10.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
-        <jarDirectory url="file://$MODULE_DIR$/libs" recursive="false" />
       </library>
     </orderEntry>
+    <orderEntry type="module-library">
+      <library name="libs/commons-io-2.6.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/libs/commons-io-2.6.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="libs/commons-lang3-3.7.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/libs/commons-lang3-3.7.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="libs/commons-logging-1.2.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/libs/commons-logging-1.2.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="libs/commons-net-3.6.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/libs/commons-net-3.6.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="libs/commons-text-1.3.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/libs/commons-text-1.3.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="libs/htmlunit-2.31.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/libs/htmlunit-2.31.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="libs/htmlunit-core-js-2.31.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/libs/htmlunit-core-js-2.31.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="libs/htmlunit-cssparser-1.0.0.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/libs/htmlunit-cssparser-1.0.0.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="libs/httpclient-4.5.5.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/libs/httpclient-4.5.5.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="libs/httpcore-4.4.9.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/libs/httpcore-4.4.9.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="libs/httpmime-4.5.5.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/libs/httpmime-4.5.5.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="libs/jetty-client-9.4.10.v20180503.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/libs/jetty-client-9.4.10.v20180503.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="libs/jetty-http-9.4.10.v20180503.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/libs/jetty-http-9.4.10.v20180503.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="libs/jetty-io-9.4.10.v20180503.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/libs/jetty-io-9.4.10.v20180503.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="libs/jetty-util-9.4.10.v20180503.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/libs/jetty-util-9.4.10.v20180503.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="libs/jetty-xml-9.4.10.v20180503.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/libs/jetty-xml-9.4.10.v20180503.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="libs/neko-htmlunit-2.31.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/libs/neko-htmlunit-2.31.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="libs/serializer-2.7.2.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/libs/serializer-2.7.2.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="libs/websocket-api-9.4.10.v20180503.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/libs/websocket-api-9.4.10.v20180503.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="libs/websocket-client-9.4.10.v20180503.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/libs/websocket-client-9.4.10.v20180503.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="libs/websocket-common-9.4.10.v20180503.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/libs/websocket-common-9.4.10.v20180503.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="libs/xalan-2.7.2.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/libs/xalan-2.7.2.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="libs/xercesImpl-2.11.0.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/libs/xercesImpl-2.11.0.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="libs/xml-apis-1.4.01.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/libs/xml-apis-1.4.01.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="library" name="libs" level="project" />
   </component>
 </module>

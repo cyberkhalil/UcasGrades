@@ -33,6 +33,6 @@ final class Utilities {
      * @param e the Exception to print it's stack and it's message.
      */
     static void printException(String s, Exception e) {
-        System.out.println(s + "\n" + e.toString() + "\n" + e.getMessage());
+        System.out.println(s + "\n" + e);
     }
 }

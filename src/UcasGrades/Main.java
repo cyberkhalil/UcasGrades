@@ -32,51 +32,9 @@ import java.util.Scanner;
  */
 public class Main {
 
-    private static File CACHE_FOLDER = new File("cache");
-
-    private static File getCACHE_FOLDER() {
-        return getCacheFolder();
-    }
-
-    private static void makeCashFolderHidden() {
-        String OS = System.getProperty("os.name", "generic").toLowerCase();
-        if (OS.contains("win")) {
-            try {
-                Process p = Runtime.getRuntime().exec("attrib +H " + getCACHE_FOLDER().getParent());
-                p.waitFor();
-            } catch (IOException | InterruptedException e) {
-                Utilities.printException("error in making folder cache hidden", e);
-            }
-        } else {
-            if (new File(".cache").exists()) {
-                if (getCacheFolder().exists() && !getCacheFolder().delete()) {
-                    Utilities.printException("in makeCashFolderHidden method",
-                            new Exception("can't remove cache folder"));
-                }
-                setCacheFolder(new File(".cache"));
-            } else {
-                if (getCacheFolder().renameTo(new File("." + getCacheFolder().getPath()))) {
-                    setCacheFolder(new File("." + getCacheFolder().getPath()));
-                } else {
-                    Utilities.printException("Error in make cache folder hidden", new Exception(
-                            "there is no any " + "folder named .cache but can't rename cache folder to .cache"));
-                }
-            }
-        }
-    }
-
-    private static File getLOGIN_CACHE_FILE() {
-        if (!getCACHE_FOLDER().isHidden())
-            makeCashFolderHidden();
-        return new File(getCacheFolder().getPath() + File.separator + "UCAS Grades" + File.separator + "Login.cache");
-    }
-
-    private static File getMARKS_SITE_CACHE_FILE() {
-        if (!getCACHE_FOLDER().isHidden())
-            makeCashFolderHidden();
-        return new File(
-                getCacheFolder().getPath() + File.separator + "UCAS Grades" + File.separator + "MarksSite.html");
-    }
+    private static String HOME = System.getProperty("user.home");
+    private static String OS = System.getProperty("os.name", "generic").toLowerCase();
+    private static File CACHE_FOLDER = null;
 
     /**
      * main method which start the program.
@@ -84,113 +42,173 @@ public class Main {
      * @param args not used
      */
     public static void main(String[] args) {
-        final int option = JOptionPane.showConfirmDialog(null,
-                "Do you want me to pop up when" + " you get new grades ?");
+        int option = JOptionPane.showConfirmDialog(null,
+                "Do you want ucasGrades to pop up when you get a new grade ?");
 
-        if (option != 0)// 0 = yes choice
-        {
+        if (option != 0) {   // 0 = yes choice
             if (option == 1) // 1 = no choice
-            {
                 JOptionPane.showMessageDialog(null, "Thanks for using this program");
-            }
-            System.exit(0);
+            return;
         }
-        String username = null;
-        String password = null;
 
-        if (getLOGIN_CACHE_FILE().exists()) {
+        if (getCACHE_FOLDER() == null) {
+            if (!createCACHE_FOLDER()) {
+                JOptionPane.showMessageDialog(null, "Error : Can't create cache folder !" +
+                        "\n Please report this error to github.com/khalil2535/UcasGrades");
+                return;
+            }
+            if (!hideCACHE_FOLDER())
+                JOptionPane.showMessageDialog(null, "Error : Can't create cache folder !\n"
+                        + " Please report this error to github.com/khalil2535/UcasGrades");
+        }
+
+        Authorization userAuth = Authorization.NOT_FOUND;
+        while (userAuth != Authorization.ACCEPTED) {
+            if (getLOGIN_CACHE_FILE() != null) {
+                if (fetchLoginFromLOGIN_CACHE_FILE(userAuth)) {
+                    option = JOptionPane.showConfirmDialog
+                            (null, "Continue as " + Authorization.username + " ?");
+                    if (option == 0) {
+                        userAuth = UcasWeb.getAuthorized(userAuth);
+                        if (userAuth == Authorization.DENIED)
+                            JOptionPane.showMessageDialog(null,
+                                    "You've Entered wrong username or password !");
+                        else if (userAuth == Authorization.ACCEPTED) break;
+                        else continue;
+                    }
+                }
+            }
+            while (!requestUserNameAndPassword(userAuth)) {
+                option = JOptionPane.showConfirmDialog(null, "Can't continue without username and password." +
+                        "\n Do you want to enter the username and password again ?");
+                if (option != 0) {   // 0 = yes choice
+                    if (option == 1) // 1 = no choice
+                        JOptionPane.showMessageDialog(null, "Thanks for using this program");
+                    return;
+                }
+            }
+
+            if (JOptionPane.showConfirmDialog(null, "Remember username & password ?") == 0) {
+                if (!createLOGIN_CACHE_FILE(
+                        Authorization.username + "\n"
+                                + Encryption.encode(Authorization.password, Integer.parseInt(Authorization.username))))
+                    JOptionPane.showMessageDialog(null, "Warning : didn't create login cache file");
+            }
+
+            userAuth = UcasWeb.getAuthorized(userAuth);
+            if (userAuth == Authorization.DENIED)
+                JOptionPane.showMessageDialog(null, "You've Entered wrong username or password !");
+            else if (userAuth == Authorization.ACCEPTED) break;
+
+            try {
+                Thread.sleep(5_000);// 5 Seconds
+            } catch (InterruptedException e) {
+                Utilities.printException("Exception in sleep NOT_FOUND Authorization", e);
+            }
+        }
+
+        // create first copy of MARKS_SITE_CACHE
+        do {
+            String newMarksSiteAsString = UcasWeb.getMarksPage();
+            if (newMarksSiteAsString == null || newMarksSiteAsString.isEmpty()) {
+                try {
+                    Thread.sleep(5_000);
+                    continue;
+                } catch (InterruptedException e) {
+                    Utilities.printException("From main method", e);
+                }
+            }
+            writeOnMarksSite1(newMarksSiteAsString);
+            break;
+        }
+        while (getMARKS_SITE_CACHE_FILE() == null);
+
+        do {
+            do {
+                String newMarksSiteAsString = UcasWeb.getMarksPage();
+                if (newMarksSiteAsString == null || newMarksSiteAsString.isEmpty()) {
+                    try {
+                        Thread.sleep(5_000);
+                        continue;
+                    } catch (InterruptedException e) {
+                        Utilities.printException("From main method", e);
+                    }
+                }
+                writeOnMarksSite2(newMarksSiteAsString);
+                break;
+            }
+            while (getMARKS_SITE_CACHE_FILE2() == null);
+            if (!getSavedMarksSite().equalsIgnoreCase(getSavedMarksSite2())) break;
+            try {
+                Thread.sleep(60_000);
+            } catch (InterruptedException e) {
+                Utilities.printException("From main method", e);
+            }
+        } while (true);
+
+        JOptionPane.showMessageDialog(null, "There is a new Mark Detected !!");
+        // TODO which mark is new (name : number) ?
+    }
+
+    private static boolean requestUserNameAndPassword(Authorization userAuth) {
+        Authorization.username = JOptionPane.showInputDialog(null,
+                "We need your Username to login to my.ucas.edu.ps (Student ID)");
+        if (Authorization.username == null || Authorization.username.isEmpty()) return false;
+
+        Authorization.password = JOptionPane.showInputDialog(null,
+                "We need your Password to login to my.ucas.edu.ps (Student Password)");
+        return Authorization.password != null && !Authorization.password.isEmpty();
+    }
+
+    private static boolean fetchLoginFromLOGIN_CACHE_FILE(Authorization userAuth) {
+        if (getLOGIN_CACHE_FILE() != null)
             try (Scanner cacheScanner = new Scanner(getLOGIN_CACHE_FILE())) {
                 if (cacheScanner.hasNext()) {
-                    username = cacheScanner.next();
+                    Authorization.username = cacheScanner.next();
                     if (cacheScanner.hasNext()) {
-                        password = Encryption.decode(cacheScanner.next(), Integer.parseInt(username));
+                        Authorization.password =
+                                Encryption.decode(cacheScanner.next(), Integer.parseInt(Authorization.username));
+                        return true;
                     }
                 }
             } catch (FileNotFoundException e) {
                 Utilities.printException("Exception in the Scanner of the cache file", e);
-                System.exit(0);
             }
-        } else {
-            // reaching here means LOGIN_CACHE_FILE doesn't exist but we just need it's
-            // parent path to exist
-            if (getCACHE_FOLDER().mkdirs()) {
-                makeCashFolderHidden();
-            } else {
-                Utilities.printException("in getCACHE_FOLDER mkdirs or makeCashFolderHidden ",
-                        new Exception("Cannot create cache named directory"));
-            }
-        }
-        if (username == null || password == null) {
-            username = JOptionPane.showInputDialog("Enter your university ID");
-            if (username == null) {
-                JOptionPane.showMessageDialog(null,
-                        "Sorry for asking you some private data but we can't see your grades without it.\n Thanks for using this program wish you'll change your mind later.");
-                System.exit(0);
-            }
-            password = JOptionPane.showInputDialog("Enter your password");
-            if (password == null) {
-                JOptionPane.showMessageDialog(null,
-                        "Sorry for asking you some private data but we can't see your grades without it.\n Thanks for using this program wish you'll change your mind later.");
-                System.exit(0);
-            }
-            int keepLoginStateNumber = JOptionPane.showConfirmDialog(null, "Remember username & password ?");
-            if (keepLoginStateNumber == 2) {
-                JOptionPane.showMessageDialog(null,
-                        "Sorry for asking you some private data but we can't see your grades without it.\n Thanks for using this program wish you'll change your mind later.");
-                System.exit(0);
-            } else if (keepLoginStateNumber == 0) {
-                writeOnLoginCacheFile(username + "\n" + Encryption.encode(password, Integer.parseInt(username)));
-            }
+        return false;
+    }
+
+    private static File getCACHE_FOLDER() {
+        if (CACHE_FOLDER != null) return CACHE_FOLDER;
+
+        File file = new File(HOME + File.separator + ".ucasGrades");
+        if (file.exists()) {
+            CACHE_FOLDER = file;
         }
 
-        Authorization userAuthorization = Authorization.NOT_FOUND;
-        while (userAuthorization != Authorization.ACCEPTED) {
-            userAuthorization = UcasWeb.getAuthorized(username, password);
-            if (userAuthorization == Authorization.DENIED) {
-                JOptionPane.showMessageDialog(null, "You've Entered wrong ID or password !");
-                break;
-                // TODO re ask user for username and password
-            } else if (userAuthorization == Authorization.NOT_FOUND) {
-                try {
-                    Thread.sleep(5_000);// 5 Seconds
-                } catch (InterruptedException e) {
-                    Utilities.printException("Exception in sleep NOT_FOUND Authorization", e);
-                }
-            }
+        return CACHE_FOLDER;
+    }
+
+    private static boolean hideCACHE_FOLDER() {
+        try {
+            if (OS.contains("win")) {
+                Runtime.getRuntime().exec("attrib +H " + CACHE_FOLDER).waitFor();
+                return true;
+            } else return OS.contains("linux");
+        } catch (IOException | InterruptedException ex) {
+            JOptionPane.showMessageDialog(null, ex);
         }
+        return false;
+    }
 
-        String newMarksSite = "ф";
-        if (!getMARKS_SITE_CACHE_FILE().exists()) {
-            writeOnMarksSite(newMarksSite);
-        }
-        while (newMarksSite.contains("ф")) {
+    private static boolean createCACHE_FOLDER() {
+        CACHE_FOLDER = new File(HOME + File.separator + ".ucasGrades");
+        return CACHE_FOLDER.mkdir();
+    }
 
-            String oldMarksSite = getSavedMarksSite();
-
-            StringBuilder newMarksSiteAsStringBuilder = new StringBuilder();
-            Scanner s = new Scanner(UcasWeb.getMarksPage());
-            while (s.hasNext()) {
-                newMarksSiteAsStringBuilder.append(s.next());
-            }
-            s.close();
-            newMarksSite = newMarksSiteAsStringBuilder.toString();
-
-            if (oldMarksSite.contains("ф")) {
-                writeOnMarksSite(newMarksSite);
-                newMarksSite = "ф";
-                continue;
-            } else if (!oldMarksSite.equals(newMarksSite)) {
-                JOptionPane.showMessageDialog(null, "Hey ! \n new grade has been submitted !!");
-                writeOnMarksSite("ф" + newMarksSite);
-                break;
-            }
-            try {
-                Thread.sleep(60_000);// check every minute
-            } catch (InterruptedException e) {
-                Utilities.printException("InterruptedException in while (there isn't new mark) loop ", e);
-            }
-            newMarksSite = "ф";
-        }
+    private static File getLOGIN_CACHE_FILE() {
+        File file = new File(getCACHE_FOLDER().getPath() + File.separator + "Login.cache");
+        if (file.exists()) return file;
+        return null;
     }
 
     /**
@@ -198,65 +216,75 @@ public class Main {
      *
      * @param text (id & password)
      */
-    private static void writeOnLoginCacheFile(String text) {
-        File LOGIN_CACHE_FILE = getLOGIN_CACHE_FILE();
-        if (!LOGIN_CACHE_FILE.getParentFile().exists()) {
-            if (LOGIN_CACHE_FILE.getParentFile().mkdir()) {
-                Utilities.printException("Exception in writeOnLoginCacheFile", new Exception("Can't make new Folder"));
-            }
-        }
+    private static boolean createLOGIN_CACHE_FILE(String text) {
+        File LOGIN_CACHE_FILE = new File(getCACHE_FOLDER().getPath() + File.separator + "Login.cache");
         try (FileWriter fw = new FileWriter(LOGIN_CACHE_FILE)) {
             fw.append(text).flush();
+            return true;
         } catch (IOException e) {
             Utilities.printException("Exception in writing on cache file", e);
         }
+        return false;
     }
 
-    /**
-     * write new marks site instead of old one
-     *
-     * @param HTMLPageAsString to write in MARKS_SITE_CACHE_FILE
-     */
-    private static void writeOnMarksSite(String HTMLPageAsString) {
-        File MARKS_SITE_CACHE_FILE = getMARKS_SITE_CACHE_FILE();
-        if (!MARKS_SITE_CACHE_FILE.getParentFile().exists()) {
-            if (MARKS_SITE_CACHE_FILE.getParentFile().mkdir()) {
-                Utilities.printException("Exception in writeOnMarksSite", new Exception("Can't make new Folder"));
-            }
-        }
-        try (FileWriter fw = new FileWriter(MARKS_SITE_CACHE_FILE)) {
-            fw.append(HTMLPageAsString).flush();
-        } catch (IOException e) {
-            Utilities.printException("Exception in writeOnMarksSite method", e);
-        }
+    private static File getMARKS_SITE_CACHE_FILE() {
+        File file = new File(getCACHE_FOLDER().getPath() + File.separator + "MarksSite.html");
+        return file.exists() ? file : null;
     }
 
-    /**
-     * method to get the saved old marks site
-     *
-     * @return Old marks site as HTML
-     */
+    private static File getMARKS_SITE_CACHE_FILE2() {
+        File file = new File(getCACHE_FOLDER().getPath() + File.separator + "newMarksSite.html");
+        return file.exists() ? file : null;
+    }
+
     private static String getSavedMarksSite() {
+        if (getMARKS_SITE_CACHE_FILE() == null) return null;
         Scanner MarksSiteScanner;
         try {
-            MarksSiteScanner = new Scanner(getMARKS_SITE_CACHE_FILE());
+            MarksSiteScanner = new Scanner(getMARKS_SITE_CACHE_FILE()).useDelimiter("\\Z");
         } catch (FileNotFoundException e) {
             Utilities.printException("FileNotFoundException in getMarksSite method", e);
-            return "ф";
+            return null;
         }
-        StringBuilder MarksSiteAsStringBuilder = new StringBuilder();
-        while (MarksSiteScanner.hasNext()) {
-            MarksSiteAsStringBuilder.append(MarksSiteScanner.next());
-        }
+        String MarksSiteAsString = MarksSiteScanner.next();
         MarksSiteScanner.close();
-        return MarksSiteAsStringBuilder.toString();
+        return MarksSiteAsString;
     }
 
-    private static File getCacheFolder() {
-        return CACHE_FOLDER;
+    private static String getSavedMarksSite2() {
+        if (getMARKS_SITE_CACHE_FILE2() == null) return null;
+        Scanner MarksSiteScanner;
+        try {
+            MarksSiteScanner = new Scanner(getMARKS_SITE_CACHE_FILE2()).useDelimiter("\\Z");
+        } catch (FileNotFoundException e) {
+            Utilities.printException("FileNotFoundException in getMarksSite method", e);
+            return null;
+        }
+        String MarksSiteAsString = MarksSiteScanner.next();
+        MarksSiteScanner.close();
+        return MarksSiteAsString;
     }
 
-    private static void setCacheFolder(File cacheFolder) {
-        CACHE_FOLDER = cacheFolder;
+    private static boolean writeOnMarksSite1(String HTMLPageAsString) {
+        File MARKS_SITE_CACHE_FILE = new File(getCACHE_FOLDER().getPath() + File.separator + "MarksSite.html");
+        try (FileWriter fw = new FileWriter(MARKS_SITE_CACHE_FILE)) {
+            fw.append(HTMLPageAsString).flush();
+            return true;
+        } catch (IOException e) {
+            Utilities.printException("Exception in writeOnMarksSite method", e);
+            return false;
+        }
     }
+
+    private static boolean writeOnMarksSite2(String HTMLPageAsString) {
+        File MARKS_SITE_CACHE_FILE = new File(getCACHE_FOLDER().getPath() + File.separator + "newMarksSite.html");
+        try (FileWriter fw = new FileWriter(MARKS_SITE_CACHE_FILE)) {
+            fw.append(HTMLPageAsString).flush();
+            return true;
+        } catch (IOException e) {
+            Utilities.printException("Exception in writeOnMarksSite method", e);
+            return false;
+        }
+    }
+
 }

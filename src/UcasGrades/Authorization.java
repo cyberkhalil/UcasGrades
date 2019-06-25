@@ -22,5 +22,7 @@ package UcasGrades;
  * @author khalil2535
  */
 public enum Authorization {
-    ACCEPTED, DENIED, NOT_FOUND
+    ACCEPTED, DENIED, NOT_FOUND;
+    static String username;
+    static String password;
 }

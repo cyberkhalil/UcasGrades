@@ -30,7 +30,9 @@ class UcasWeb {
 
     private static final WebClient webClient = new WebClient();
 
-    static Authorization getAuthorized(String username, String password) {
+    static Authorization getAuthorized(Authorization auth) {
+        String username = auth.username;
+        String password = auth.password;
         try {
             final HtmlPage page1 = webClient.getPage("https://my.ucas.edu.ps/login?backurl=/home");
 
@@ -68,7 +70,7 @@ class UcasWeb {
         } catch (IOException e) {
             Utilities.printException("Exception in getMarksPage method", e);
         }
-        return "ф Error in getting marks page ф";
+        return null;
     }
 
 }
