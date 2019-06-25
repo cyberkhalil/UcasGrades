@@ -8,7 +8,7 @@ Installation
 ----
 It's a java application so it's important to install java before use , this program created with openJDK 1.8 .<br>
 you can see [all releases](https://github.com/khalil2535/UcasGrades/releases)
-or click [here](https://github.com/khalil2535/UcasGrades/releases/download/untagged-0bdf523f05e46e29f9c1/UcasGrades.jar)
+or click [here](https://github.com/khalil2535/UcasGrades/releases/download/v2.0/UcasGrades.jar)
  to download the last one.<br>
 After downloading just open the jar file which named by [UcasGrades.jar] .
 
